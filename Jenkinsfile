@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    echo '11111'
+                    echo '1234'
                 }
             }
         }
