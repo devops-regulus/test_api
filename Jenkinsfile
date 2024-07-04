@@ -1,31 +1,22 @@
 pipeline {
     agent any
-    triggers {
-        GenericTrigger(
-            genericVariables: [
-                [key: 'ref', value: '$.ref'],
-            ],
-            causeString: 'Triggered on $ref',
-            printContributedVariables: true,
-            printPostContent: true,
-            regexpFilterExpression: '',
-            regexpFilterText: ''
-        )
+    
+    parameters {
+        string(name: 'branch', defaultValue: '', description: 'Branch name')
     }
+
     stages {
         stage('Build') {
             steps {
-                echo "Building branch $ref"
-            }
-        }
-        stage('Test') {
-            steps {
-                echo "Running tests for commit $after"
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo "Deploying application"
+                script {
+                    if (params.branch ==~ /refs\/heads\/master/) {
+                        sh 'ls'
+                    } else if (params.branch ==~ /refs\/heads\/test/) {
+                        sh 'df -h'
+                    } else {
+                        echo "Branch not specified or does not match master or test"
+                    }
+                }
             }
         }
     }
