@@ -10,7 +10,7 @@ pipeline {
             steps {
                 script {
                     // Checkout the specific branch
-                    checkout([$class: 'GitSCM', branches: [[name: "*/${params.branch}"]], userRemoteConfigs: [[url: 'YOUR_GIT_REPO_URL']]])
+                    checkout([$class: 'GitSCM', branches: [[name: "*/${params.branch}"]], userRemoteConfigs: [[url: 'https://github.com/devops-regulus/test_api.git']]])
                 }
             }
         }
