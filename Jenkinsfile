@@ -1,42 +1,32 @@
 pipeline {
     agent any
-    
     triggers {
         GenericTrigger(
             genericVariables: [
-                [$class: 'GenericVariable', key: 'webhookTriggered', value: '$class']
+                [key: 'ref', value: '$.ref'],
             ],
-            token: 'test',
-            printContributedVariables: true
+            causeString: 'Triggered on $ref',
+            printContributedVariables: true,
+            printPostContent: true,
+            regexpFilterExpression: '',
+            regexpFilterText: ''
         )
     }
-    
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-        
         stage('Build') {
             steps {
-                sh 'echo "Building..."'
+                echo "Building branch $ref"
             }
         }
-        
+        stage('Test') {
+            steps {
+                echo "Running tests for commit $after"
+            }
+        }
         stage('Deploy') {
             steps {
-                sh 'echo "Deploying..."'
+                echo "Deploying application"
             }
-        }
-    }
-    
-    post {
-        success {
-            echo 'Build succeeded!'
-        }
-        failure {
-            echo 'Build failed.'
         }
     }
 }
