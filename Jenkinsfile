@@ -2,9 +2,11 @@ pipeline {
     agent any
     
     stages {
-        stage('Run ls command') {
+        stage('Build') {
             steps {
-                sh 'ls'
+                script {
+                    echo '11111'
+                }
             }
         }
     }
