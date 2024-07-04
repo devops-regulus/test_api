@@ -1,17 +1,12 @@
 pipeline {
     agent any
     
-    parameters {
-        string(name: 'BRANCH', defaultValue: 'main', description: 'Branch to build')
-    }
-    
     triggers {
         GenericTrigger(
             genericVariables: [
                 [$class: 'GenericVariable', key: 'webhookTriggered', value: '$class']
             ],
-            regexpFilterText: '',
-            token: 'my-token',
+            token: 'test',
             printContributedVariables: true
         )
     }
@@ -19,37 +14,29 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                script {
-                    checkout([$class: 'GitSCM',
-                             branches: [[name: "*/${params.BRANCH}"]],
-                             userRemoteConfigs: [[url: 'https://github.com/devops-regulus/test_api.git']]])
-                }
+                checkout scm
             }
         }
         
         stage('Build') {
             steps {
-                script {
-                    sh 'ls'
-                }
+                sh 'echo "Building..."'
             }
         }
         
         stage('Deploy') {
             steps {
-                script {
-                    sh 'ls'
-                }
+                sh 'echo "Deploying..."'
             }
         }
     }
     
     post {
         success {
-            echo 'Build successful - deploying now'
+            echo 'Build succeeded!'
         }
         failure {
-            echo 'Build failed - notify someone'
+            echo 'Build failed.'
         }
     }
 }
